@@ -1,41 +1,44 @@
+package test;
 import com.sun.javafx.PlatformUtil;
 
-import org.openqa.selenium.By;
+import pageobject.HotelBookingPage;
+
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeClass;
+
 import org.testng.annotations.Test;
 
-public class SignInTest {
+public class HotelBookingTest {
 
-    WebDriver driver;   
-    
-    @BeforeTest
+	WebDriver driver;   
+	HotelBookingPage hotelbookingpage;
+	      
+    @BeforeClass
     public void initialize(){
     	setDriverPath();
-    	driver  = new ChromeDriver();    	
-    }    
-
-    @Test
-    public void shouldThrowAnErrorIfSignInDetailsAreMissing() {
-
-        driver.get("https://www.cleartrip.com/");
-        waitFor(2000);
-
-        driver.findElement(By.linkText("Your trips")).click();
-        driver.findElement(By.id("SignIn")).click();
-        
-        waitFor(2000);
-        driver.switchTo().frame("modal_window");
-
-        driver.findElement(By.id("signInButton")).click();
-
-        String errors1 = driver.findElement(By.id("errors1")).getText();
-        Assert.assertTrue(errors1.contains("There were errors in your submission"));
-        driver.quit();
+    	driver  = new ChromeDriver();      	 
+    	hotelbookingpage = new HotelBookingPage(driver);    	
     }
 
+    @Test
+    public void shouldBeAbleToSearchForHotels() {
+        
+    	driver.get("https://www.cleartrip.com/");
+    	hotelbookingpage.clickOnHotelLink();
+    	hotelbookingpage.typeLocation("Indiranagar, Bangalore");
+    	waitFor(1000);
+    	hotelbookingpage.selectLocationFromDropDown(1);
+    	waitFor(2000);
+    	hotelbookingpage.selectCheckInDate();
+    	waitFor(1000);
+    	hotelbookingpage.selectCheckOutDate();
+    	hotelbookingpage.selectTravellerSelection("1 room, 2 adults");
+    	hotelbookingpage.clickSearchButton();
+    	
+    	driver.quit();
+    }
+    
     private void waitFor(int durationInMilliSeconds) {
         try {
             Thread.sleep(durationInMilliSeconds);
@@ -43,8 +46,8 @@ public class SignInTest {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
     }
-
-    private void setDriverPath() {
+    
+   private void setDriverPath() {
         if (PlatformUtil.isMac()) {
             System.setProperty("webdriver.chrome.driver", "chromedriver_mac");
         }
@@ -55,6 +58,5 @@ public class SignInTest {
             System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
         }
     }
-
 
 }
