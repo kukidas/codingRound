@@ -1,6 +1,7 @@
 package test;
 import com.sun.javafx.PlatformUtil;
 
+import pageobject.BaseTest;
 import pageobject.HotelBookingPage;
 
 import org.openqa.selenium.WebDriver;
@@ -9,18 +10,16 @@ import org.testng.annotations.BeforeClass;
 
 import org.testng.annotations.Test;
 
-public class HotelBookingTest {
+public class HotelBookingTest extends BaseTest{
 
 	WebDriver driver;   
 	HotelBookingPage hotelbookingpage;
-	      
-    @BeforeClass
-    public void initialize(){
-    	setDriverPath();
-    	driver  = new ChromeDriver();      	 
-    	hotelbookingpage = new HotelBookingPage(driver);    	
-    }
-
+	public HotelBookingTest(){
+		super();
+		this.driver = getDriver();
+		hotelbookingpage = new HotelBookingPage(driver); 
+	}
+	
     @Test
     public void shouldBeAbleToSearchForHotels() {
         
@@ -37,26 +36,5 @@ public class HotelBookingTest {
     	hotelbookingpage.clickSearchButton();
     	
     	driver.quit();
-    }
-    
-    private void waitFor(int durationInMilliSeconds) {
-        try {
-            Thread.sleep(durationInMilliSeconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-    
-   private void setDriverPath() {
-        if (PlatformUtil.isMac()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_mac");
-        }
-        if (PlatformUtil.isWindows()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_win.exe");
-        }
-        if (PlatformUtil.isLinux()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
-        }
-    }
-
+    } 
 }

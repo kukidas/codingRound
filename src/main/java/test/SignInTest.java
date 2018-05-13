@@ -1,27 +1,26 @@
 package test;
-import com.sun.javafx.PlatformUtil;
-
-import pageobject.SignInBookingPage;
-
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
-public class SignInTest {
+import com.sun.javafx.PlatformUtil;
+
+import pageobject.BaseTest;
+import pageobject.SignInBookingPage;
+
+public class SignInTest extends BaseTest {
 
     WebDriver driver;
     SignInBookingPage signInBookingPage;
     
-    @BeforeTest
-    public void initialize(){
-    	setDriverPath();
-    	driver  = new ChromeDriver(); 
+    public SignInTest(){
+    	super();
+    	this.driver = getDriver();
     	signInBookingPage = new SignInBookingPage(driver);
-    }    
-
+    }
+   
     @Test
     public void shouldThrowAnErrorIfSignInDetailsAreMissing() {
 
@@ -37,26 +36,4 @@ public class SignInTest {
         Assert.assertTrue(signInBookingPage.getErrorMessage().contains("There were errors in your submission"));
         driver.quit();
     }
-
-    private void waitFor(int durationInMilliSeconds) {
-        try {
-            Thread.sleep(durationInMilliSeconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-
-    private void setDriverPath() {
-        if (PlatformUtil.isMac()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_mac");
-        }
-        if (PlatformUtil.isWindows()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_win.exe");
-        }
-        if (PlatformUtil.isLinux()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
-        }
-    }
-
-
 }

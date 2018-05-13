@@ -6,20 +6,20 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import com.sun.javafx.PlatformUtil;
+
+import pageobject.BaseTest;
 import pageobject.FlightBookingPage;
 
-public class FlightBookingTest {
+public class FlightBookingTest extends BaseTest{
 	
 	WebDriver driver;
 	FlightBookingPage flightBookingPage;
-
-	@BeforeTest
-    public void initialize(){
-    	setDriverPath();
-    	driver  = new ChromeDriver();   
-    	flightBookingPage = new FlightBookingPage(driver);
-    }
+	
+	public FlightBookingTest(){
+		super();
+		driver = getDriver();
+		flightBookingPage = new FlightBookingPage(driver);
+	}
 
     @Test
     public void testThatResultsAppearForAOneWayJourney() {
@@ -51,35 +51,5 @@ public class FlightBookingTest {
 
         //close the browser
         driver.quit();
-    }
-
-
-    private void waitFor(int durationInMilliSeconds) {
-        try {
-            Thread.sleep(durationInMilliSeconds);
-        } catch (InterruptedException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-        }
-    }
-
-    private boolean isElementPresent(By by) {
-        try {
-            driver.findElement(by);
-            return true;
-        } catch (NoSuchElementException e) {
-            return false;
-        }
-    }
-
-    private void setDriverPath() {
-        if (PlatformUtil.isMac()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_mac");
-        }
-        if (PlatformUtil.isWindows()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_win.exe");
-        }
-        if (PlatformUtil.isLinux()) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
-        }
     }
 }
